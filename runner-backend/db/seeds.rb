@@ -8,8 +8,11 @@
 
 
 kat = Runner.create(name: 'Kat')
+phil = Runner.create(name: 'Phil')
 
 goal1 = Goal.create(category: 'pace', value: 9.30, runner: kat)
+goal2 = Goal.create(category: 'mileage', value: 30, runner: phil)
 
 run1 = Run.create(distance: 3.00, pace: 10.00, date: '2019-01-08', rating: 2, goal: goal1)
+run2 = Run.create(distance: 5.00, pace: 8.30, date: '2019-11-11', rating: 3, goal: goal2)
 

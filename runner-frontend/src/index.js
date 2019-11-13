@@ -1,10 +1,11 @@
 (function () {
 
+  showLoginPage();
   createAccountModal();
   loginModal();
   listenForLoginSubmit();
   listenForCreateSubmit();
-  showLoginPage()
+  
 
   function showLoginPage() {
     document.getElementById('main-page').style.display = "none"
@@ -58,20 +59,51 @@
     document.getElementById('main-page').style.display = ""
     document.getElementById('login-page').style.display = "none"
   }
+
   //listen for login 
   function listenForLoginSubmit() {
     const loginSubmit = document.getElementById('login')
 
     loginSubmit.addEventListener('submit', event => {
       event.preventDefault();
-      const runnersName = event.target.name.value;
-      showMainPage();
-
-      // getRunner();      
-
-      
+      const runnerName = event.target.name.value;
+      getRunner(runnerName);   
+      // showMainPage();
+         
     })
   }
+
+  //fetches runner
+  function getRunner(runnerName) {
+    let runner;
+    fetch('http://localhost:3000/runners')
+      .then(response => response.json())
+      .then(allRunners => {
+
+        if (allRunners.error) {
+          throw 'Error. Please try again.'
+        } 
+
+        runner = allRunners.find(runner => {
+          return runner.name === runnerName
+        })
+        if (runner) {
+          renderRunner(runner);
+          showMainPage();
+        } else {
+          throw 'No Runner Found';
+        }
+      })
+      .catch(error => alert(error))
+  }
+
+  //renders runner to screen
+  function renderRunner(runner) {
+    // const mainHeader = document.getElementById('main-page').querySelector('header')
+    const welcomeHeader = document.getElementById('welcome')
+    welcomeHeader.textContent = `Welcome, ${runner.name}`
+  }
+
 
   //listen for create
   function listenForCreateSubmit() {
