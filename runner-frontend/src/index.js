@@ -2,6 +2,14 @@
 
   createAccountModal();
   loginModal();
+  listenForLoginSubmit();
+  listenForCreateSubmit();
+  showLoginPage()
+
+  function showLoginPage() {
+    document.getElementById('main-page').style.display = "none"
+    document.getElementById('login-page').style.display = ""
+  }
   
   //create modal
   function createAccountModal() {
@@ -46,6 +54,36 @@
     window.addEventListener("click", windowOnClick2);
   }
 
-  
+  function showMainPage() {
+    document.getElementById('main-page').style.display = ""
+    document.getElementById('login-page').style.display = "none"
+  }
+  //listen for login 
+  function listenForLoginSubmit() {
+    const loginSubmit = document.getElementById('login')
+
+    loginSubmit.addEventListener('submit', event => {
+      event.preventDefault();
+      const runnersName = event.target.name.value;
+      showMainPage();
+
+      // getRunner();      
+
+      
+    })
+  }
+
+  //listen for create
+  function listenForCreateSubmit() {
+    const createSubmitButton = document.getElementById('create');
+    createSubmitButton.addEventListener('submit', event => {
+      event.preventDefault();
+      const runnersName = event.target.name.value;
+      
+      showMainPage();
+      
+    })
+  }
+
 
 })();
