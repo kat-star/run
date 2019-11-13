@@ -37,8 +37,28 @@
    </div>
 
    <div id="main-page">
-    <header><h1 id="welcome"></h1></header>
-
+    <header>
+      <h1 id="welcome"></h1>
+      <button class="trigger" id="trigger-add-run">Add Run</button>
+        <div class="modal" id="modal-add-run">
+          <div class="modal-content">
+            <span class="close-button" id="close-add-run">&times;</span>
+            <h3>Please Enter Your Run Stats:</h3>
+            <form id="run">
+              <select>
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="opel">Opel</option>
+                <option value="audi">Audi</option>
+              </select>
+              <input type="text" name="distance" placeholder="distance">
+              <input type="text" name="pace" placeholder="pace">
+              <input type="text" name="rating" placeholder="rating">
+              <input type="submit" value="Add Run" id="run-btn">
+              </form>
+          </div>
+        </div>
+    </header>
 
     <div class="parent">
 
@@ -50,45 +70,50 @@
           <div class="modal" id="modal-goal">
             <div class="modal-content">
               <span class="close-button" id="close-goal">&times;</span>
-        </div>
+              <h3>Add a New Goal</h3>
+              <form id="add-goal">
+                <input type="text" name="category" value='category'>
+                <input type="text" name="value" value='value'>
+                <input type="submit" value="Add a Goal" id="add-goal-btn">
+              </form>
+            
+            </div>
 
-        <div id="goal-meter">
-          <div class="bar-container" style="height: 500px;">
-            <div class="goal-bar">
-              <div class="bar-wrap">
+            <div id="goal-meter">
+              <div class="bar-container" style="height: 500px;">
+                <div class="goal-bar">
+                  <div class="bar-wrap">
           
-                <div class="bar" style="transform: translateY(55%);">
-                  <div class="bar-info">
-                    <div class="bar-info-inner">
+                    <div class="bar" style="transform: translateY(55%);">
+                      <div class="bar-info">
+                        <div class="bar-info-inner">
                       
+                        </div>
+                      </div>
                     </div>
+                    <span class="bar-label"></span>
                   </div>
-                </div>
-                <span class="bar-label"></span>
+                  <div class="bar-labels">
+                    <span class="bar-label">100</span>
+                    <span class="bar-label">75</span>
+                    <span class="bar-label">50</span>
+                    <span class="bar-label">25</span>
+                    <span class="bar-label">0</span>
+                  </div>
+                </div> <!-- /.goal-bar -->
               </div>
-          
-              <div class="bar-labels">
-                <span class="bar-label">100</span>
-                <span class="bar-label">75</span>
-                <span class="bar-label">50</span>
-                <span class="bar-label">25</span>
-                <span class="bar-label">0</span>
-              </div>
-            </div> <!-- /.goal-bar -->
-          </div>
+            </div>
+          </div> 
         </div>
-      </div> 
-
+      </div>
       <div id="stats-container" class="runner-info"> 
         <header>Your Stats</header>
       </div>
       <div id="awards-container" class="runner-info">
         <header>Awards</header>
       </div>
-    </div>
-
-  </div>
-
+    </div> 
+   </div>
    <script type="application/javascript" src="src/index.js" charset="UTF-8"></script>
   </body>
 </html>

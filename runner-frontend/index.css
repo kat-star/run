@@ -140,3 +140,11 @@ margin: 15px;
     color: white;
     text-align: center;
 }
+
+#welcome {
+  margin-right: 30rem;
+}
+
+#add-run {
+  margin-left: 5rem
+}

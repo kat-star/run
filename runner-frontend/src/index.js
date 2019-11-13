@@ -5,6 +5,8 @@
   loginModal();
   listenForLoginSubmit();
   listenForCreateSubmit();
+  addRunModal();
+  newGoalModal();
   
 
   function showLoginPage() {
@@ -15,9 +17,9 @@
   //create modal
   function createAccountModal() {
 
-    var modal1 = document.getElementById("modal-create");
-    var trigger1 = document.getElementById("trigger-create");
-    var closeButton1 = document.getElementById("close-create");
+    const modal1 = document.getElementById("modal-create");
+    const trigger1 = document.getElementById("trigger-create");
+    const closeButton1 = document.getElementById("close-create");
 
     function toggleModal1() {
       modal1.classList.toggle("show-modal");
@@ -36,9 +38,9 @@
 
 //login modal
   function loginModal() {
-    var modal2 = document.getElementById("modal-login");
-    var trigger2 = document.getElementById("trigger-login");
-    var closeButton2 = document.getElementById("close-login");
+    const modal2 = document.getElementById("modal-login");
+    const trigger2 = document.getElementById("trigger-login");
+    const closeButton2 = document.getElementById("close-login");
 
     function toggleModal2() {
       modal2.classList.toggle("show-modal");
@@ -98,7 +100,6 @@
 
   //renders runner to screen   
   function renderRunner(runner) {
-    // const mainHeader = document.getElementById('main-page').querySelector('header')
     const welcomeHeader = document.getElementById('welcome')
     welcomeHeader.textContent = `Welcome, ${runner.name}`
     //check if a goal exists:
@@ -109,27 +110,34 @@
   function checkRunnerGoal(runner) {
     // const goalStatus = runner.goals.find(goal => goal.status === 'active')
     const runnerId = runner.id
-    let runnerGoals;
+    let runnerGoal;
     fetch('http://localhost:3000/goals/')
       .then(response => response.json()) 
       .then(allGoals => {
 
-        runnerGoals = allGoals.find(goal => {
-          return goal.runnerId == runnerId
+        runnerGoal = allGoals.find(goal => {
+          return ((goal.runnerId == runnerId) && goal.active)
         })
         
-        if (runnerGoals) {
+        if (runnerGoal) {
           showGoalProgressMeter()
+        } else {
+          showAddGoal();
         }
       })
     
   }
 
-//show goal progress if goal is created
-function showGoalProgressMeter() {
-  document.getElementById('goal-meter').style.display = ""
-  document.getElementById('new-goal').style.display = "none"
-}
+// show goal progress if goal is created
+  function showGoalProgressMeter() {
+    document.getElementById('goal-meter').style.display = ""
+    document.getElementById('new-goal').style.display = "none"
+  }
+
+  function showAddGoal() {
+    document.getElementById('goal-meter').style.display = "none"
+    document.getElementById('new-goal').style.display = ""
+  }
 
 
   //listen for create
@@ -179,10 +187,46 @@ function showGoalProgressMeter() {
         }
       })
       .catch(error => alert(error))
-    
-
-
   }
 
+  function addRunModal() {
+    const modal3 = document.getElementById("modal-add-run");
+    const trigger3 = document.getElementById("trigger-add-run");
+    const closeButton3 = document.getElementById("close-add-run");
+
+    function toggleModal3() {
+      modal3.classList.toggle("show-modal");
+    }
+
+    function windowOnClick3(event) {
+      if (event.target === modal3) {
+        toggleModal3();
+      }
+    }
+    trigger3.addEventListener("click", toggleModal3);
+    closeButton3.addEventListener("click", toggleModal3);
+    window.addEventListener("click", windowOnClick3);
+  }
+
+  // new goal for modal
+  function newGoalModal() {
+    const modal4 = document.getElementById("modal-goal");
+    const trigger4 = document.getElementById("trigger-goal");
+    const closeButton4 = document.getElementById("close-goal");
+
+    function toggleModal4() {
+      modal4.classList.toggle("show-modal");
+    }
+
+    function windowOnClick4(event) {
+      if (event.target === modal4) {
+        toggleModal4();
+      }
+    }
+
+    trigger4.addEventListener("click", toggleModal4);
+    closeButton4.addEventListener("click", toggleModal4);
+    window.addEventListener("click", windowOnClick4);
+  }
 
 })();
