@@ -21,6 +21,7 @@
             </form>
           </div>
         </div>
+
         <button class="trigger" id="trigger-login">Login</button>
         <div class="modal" id="modal-login">
           <div class="modal-content">
@@ -40,9 +41,44 @@
 
 
     <div class="parent">
+
       <div id="goals-container" class="runner-info">
         <header>Goal Progress</header>
+
+        <div id="new-goal">
+          <button class="trigger" id="trigger-goal">Add a New Goal</button>
+          <div class="modal" id="modal-goal">
+            <div class="modal-content">
+              <span class="close-button" id="close-goal">&times;</span>
+        </div>
+
+        <div id="goal-meter">
+          <div class="bar-container" style="height: 500px;">
+            <div class="goal-bar">
+              <div class="bar-wrap">
+          
+                <div class="bar" style="transform: translateY(55%);">
+                  <div class="bar-info">
+                    <div class="bar-info-inner">
+                      
+                    </div>
+                  </div>
+                </div>
+                <span class="bar-label"></span>
+              </div>
+          
+              <div class="bar-labels">
+                <span class="bar-label">100</span>
+                <span class="bar-label">75</span>
+                <span class="bar-label">50</span>
+                <span class="bar-label">25</span>
+                <span class="bar-label">0</span>
+              </div>
+            </div> <!-- /.goal-bar -->
+          </div>
+        </div>
       </div> 
+
       <div id="stats-container" class="runner-info"> 
         <header>Your Stats</header>
       </div>

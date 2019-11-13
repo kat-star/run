@@ -68,7 +68,6 @@
       event.preventDefault();
       const runnerName = event.target.name.value;
       getRunner(runnerName);   
-      // showMainPage();
          
     })
   }
@@ -97,12 +96,40 @@
       .catch(error => alert(error))
   }
 
-  //renders runner to screen
+  //renders runner to screen   
   function renderRunner(runner) {
     // const mainHeader = document.getElementById('main-page').querySelector('header')
     const welcomeHeader = document.getElementById('welcome')
     welcomeHeader.textContent = `Welcome, ${runner.name}`
+    //check if a goal exists:
+    checkRunnerGoal(runner)
   }
+
+  //function to check if a goal exists (do we need to have an option whether a goal is completed? )
+  function checkRunnerGoal(runner) {
+    // const goalStatus = runner.goals.find(goal => goal.status === 'active')
+    const runnerId = runner.id
+    let runnerGoals;
+    fetch('http://localhost:3000/goals/')
+      .then(response => response.json()) 
+      .then(allGoals => {
+
+        runnerGoals = allGoals.find(goal => {
+          return goal.runnerId == runnerId
+        })
+        
+        if (runnerGoals) {
+          showGoalProgressMeter()
+        }
+      })
+    
+  }
+
+//show goal progress if goal is created
+function showGoalProgressMeter() {
+  document.getElementById('goal-meter').style.display = ""
+  document.getElementById('new-goal').style.display = "none"
+}
 
 
   //listen for create
