@@ -111,10 +111,50 @@
     createSubmitButton.addEventListener('submit', event => {
       event.preventDefault();
       const runnersName = event.target.name.value;
-      
-      showMainPage();
+      createRunner(runnersName)
+      // showMainPage();
       
     })
+  }
+
+  function createRunner(runnerName) {
+    let runner;
+    fetch('http://localhost:3000/runners')
+      .then(response => response.json())
+      .then(allRunners => {
+
+        if (allRunners.error) {
+          throw 'Error. Please try again.'
+        } 
+
+        runner = allRunners.find(runner => {
+          return runner.name === runnerName
+        })
+        if (runner) {
+          renderRunner(runner);
+          showMainPage();
+          throw 'You already have an account.'
+        } else {
+          fetch('http://localhost:3000/runners', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }, 
+            body: JSON.stringify({
+              name: runnerName
+            })
+          }).then(resp => resp.json())
+            .then(runner => {
+              renderRunner(runner);
+              showMainPage();
+            });
+        }
+      })
+      .catch(error => alert(error))
+    
+
+
   }
 
 
