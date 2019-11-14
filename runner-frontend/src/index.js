@@ -30,6 +30,7 @@
     const modal1 = document.getElementById("modal-create");
     const trigger1 = document.getElementById("trigger-create");
     const closeButton1 = document.getElementById("close-create");
+    const submitClose1 = document.getElementById("create-btn");
 
     function toggleModal1() {
       modal1.classList.toggle("show-modal");
@@ -43,7 +44,7 @@
     trigger1.addEventListener("click", toggleModal1);
     closeButton1.addEventListener("click", toggleModal1);
     window.addEventListener("click", windowOnClick1);
-  
+    submitClose1.addEventListener("click", toggleModal1)
   }
 
 //login modal
@@ -51,6 +52,7 @@
     const modal2 = document.getElementById("modal-login");
     const trigger2 = document.getElementById("trigger-login");
     const closeButton2 = document.getElementById("close-login");
+    const submitClose2 = document.getElementById("login-btn");
 
     function toggleModal2() {
       modal2.classList.toggle("show-modal");
@@ -65,15 +67,12 @@
     trigger2.addEventListener("click", toggleModal2);
     closeButton2.addEventListener("click", toggleModal2);
     window.addEventListener("click", windowOnClick2);
+    submitClose2.addEventListener("click", toggleModal2)
   }
 
   function showMainPage() {
     document.getElementById('main-page').style.display = ""
     document.getElementById('login-page').style.display = "none"
-    const createModal = document.getElementById('modal-create')
-    createModal.style.display = 'none'
-    const loginModal = document.getElementById('modal-login')
-    loginModal.style.display = 'none'
   }
 
   //listen for login 
@@ -83,7 +82,8 @@
     loginSubmit.addEventListener('submit', event => {
       event.preventDefault();
       const runnerName = event.target.name.value;
-      getRunner(runnerName);   
+      getRunner(runnerName); 
+      
          
     })
   }
@@ -146,12 +146,14 @@
     document.getElementById('goal-meter').style.display = ""
     document.getElementById('new-goal').style.display = "none"
     document.getElementById('trigger-edit-goal').style.display = ""
+    document.getElementById('trigger-add-run').style.display = ""
   }
 
   function showAddGoal() {
     document.getElementById('goal-meter').style.display = "none"
     document.getElementById('new-goal').style.display = ""
     document.getElementById('trigger-edit-goal').style.display = "none"
+    document.getElementById('trigger-add-run').style.display = "none"
   }
 
 
@@ -206,6 +208,7 @@
     const modal3 = document.getElementById("modal-add-run");
     const trigger3 = document.getElementById("trigger-add-run");
     const closeButton3 = document.getElementById("close-add-run");
+    const submitClose3 = document.getElementById("run-btn");
 
     function toggleModal3() {
       modal3.classList.toggle("show-modal");
@@ -219,6 +222,7 @@
     trigger3.addEventListener("click", toggleModal3);
     closeButton3.addEventListener("click", toggleModal3);
     window.addEventListener("click", windowOnClick3);
+    submitClose3.addEventListener("click", toggleModal3);
   }
 
   // new goal for modal
@@ -286,8 +290,8 @@
         date: date
       }
       postRunToDatabase(run)
-      const runModal = document.getElementById('modal-add-run')
-      runModal.style.display = 'none'
+      // const runModal = document.getElementById('modal-add-run')
+      // runModal.style.display = 'none'
     })
   }
 
@@ -303,9 +307,12 @@
         pace: run.pace,
         date: run.date,
         rating: run.rating,
-        goal_id: runnerGoal.id // need to change this to current goal
+        goal_id: runnerGoal.id 
       })
-    }) // need to call on function to update goal status
+    }).then(resp => resp.json())
+      .then(goal => {
+// need to call on function to update goal status 
+      }) 
   }
 
 
@@ -357,7 +364,7 @@
     })      
     .then(response => response.json())
     .then(postedGoal => {
-      console.log(postedGoal)
+      console.log(postedGoal) // what to do here later?
     })
   }
 
@@ -365,6 +372,7 @@
     const modal5 = document.getElementById("modal-edit");
     const trigger5 = document.getElementById("trigger-edit");
     const closeButton5 = document.getElementById("close-edit");
+    const submitClose5 = document.getElementById("edit-btn")
 
     function toggleModal5() {
       modal5.classList.toggle("show-modal");
@@ -379,6 +387,7 @@
     trigger5.addEventListener("click", toggleModal5);
     closeButton5.addEventListener("click", toggleModal5);
     window.addEventListener("click", windowOnClick5);
+    submitClose5.addEventListener("click", toggleModal5)
   }
 
   function listenForEditSubmit() {
@@ -404,17 +413,7 @@
     .then(runnerr => { 
       renderRunner(runnerr)
       runner = runnerr
-      const editModal = document.getElementById('modal-edit')
-      editModal.style.display = 'none'
-      editAccountModal()
-
     })
-  }
-
-  function resetShowPage() {
-    showLoginPage();
-    createAccountModal();
-    loginModal();
   }
 
   function addEventListenerDeleteAccount() {
@@ -422,7 +421,7 @@
     deleteButton.addEventListener('click', e => {
       fetch(`http://localhost:3000/runners/${runner.id}`, {
         method: 'DELETE'
-      }).then(resetShowPage())
+      }).then(showLoginPage())
     })
     
   }
