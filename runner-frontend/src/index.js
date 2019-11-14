@@ -262,9 +262,9 @@
         pace: run.pace,
         date: run.date,
         rating: run.rating,
-        goal_id: 1
+        goal_id: 1 // need to change this to current goal
       })
-    })
+    }) // need to call on function to update goal status
   }
 
 })();
