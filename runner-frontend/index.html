@@ -71,11 +71,28 @@
             <div class="modal-content">
               <span class="close-button" id="close-goal">&times;</span>
               <h3>Add a New Goal</h3>
+
               <form id="add-goal">
-                <input type="text" name="category" value='category'>
-                <input type="text" name="value" value='value'>
-                <input type="submit" value="Add a Goal" id="add-goal-btn">
-              </form>
+
+                <select id="goal-category">
+                  <option value="base">Please select:</option>
+                  <option value="pace">Pace</option>
+                  <option value="mileage">Mileage</option>
+                  
+                </select>
+                
+                <div id="pace-div" > 
+                  <input type="text" name="pace" placeholder='pace'>
+                  <input type="submit" value="Add a Goal" id="add-goal-btn">
+                </div>
+                <div id="mileage-div">
+                  <input type="text" name="value" placeholder="value">
+                  <input type="submit" value="Add a Goal" id="add-goal-btn">
+                </div>
+
+                  <!-- <input type="submit" value="Add a Goal" id="add-goal-btn"> -->
+
+                </form>
             
             </div>
 
