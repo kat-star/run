@@ -217,27 +217,13 @@
 
               <form id="add-goal">
 
-                <select id="goal-category">
-                  <option value="base">Please select:</option>
-                  <option value="pace">Pace</option>
-                  <option value="mileage">Mileage</option>
-                  
-                </select>
-                
-                <div id="pace-div" > 
-                  <input type="text" name="pace" placeholder='pace'>
-                  <input type="submit" value="Add a Goal" id="add-goal-btn">
-                </div>
-                <div id="mileage-div">
-                  <input type="text" name="value" placeholder="value">
-                  <input type="submit" value="Add a Goal" id="add-goal-btn">
-                </div>
-
-                  <!-- <input type="submit" value="Add a Goal" id="add-goal-btn"> -->
-
-                </form>
-            
+                <input type="text" name="category" value='category'>
+                <input type="text" name="value" value='value'>
+                <input type="submit" value="Add a Goal" id="add-goal-btn">
+              </form>
             </div>
+            </div>
+          </div>
 
             <div id="goal-meter">
               <div class="bar-container" style="height: 500px;">
@@ -263,8 +249,8 @@
                 </div> <!-- /.goal-bar -->
               </div>
             </div>
-          </div> 
-        </div>
+           
+        
       </div>
       <div id="stats-container" class="runner-info"> 
         <header>Your Stats</header>
@@ -279,7 +265,19 @@
       <div id="awards-container" class="runner-info">
         <header>Awards</header>
       </div>
-    </div> 
+    </div>
+    <button class="trigger" id="trigger-edit">Edit Account</button>
+        <div class="modal" id="modal-edit">
+          <div class="modal-content">
+            <span class="close-button" id="close-edit">&times;</span>
+            <h3>Please Enter Your Name:</h3>
+            <form id="edit">
+              <input type="text" name="name" placeholder="Name">
+              <input type="submit" value="Edit Account" id="edit-btn">
+            </form>
+          </div>
+        </div>
+    <button id=delete>Delete Account</button>
    </div>
    <script type="application/javascript" src="src/index.js" charset="UTF-8"></script>
   </body>
