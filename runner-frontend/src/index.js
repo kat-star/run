@@ -7,7 +7,8 @@
   listenForCreateSubmit();
   addRunModal();
   newGoalModal();
-  
+  listenForRunSubmit();
+  let runner;
 
   function showLoginPage() {
     document.getElementById('main-page').style.display = "none"
@@ -76,7 +77,7 @@
 
   //fetches runner
   function getRunner(runnerName) {
-    let runner;
+    
     fetch('http://localhost:3000/runners')
       .then(response => response.json())
       .then(allRunners => {
@@ -153,7 +154,6 @@
   }
 
   function createRunner(runnerName) {
-    let runner;
     fetch('http://localhost:3000/runners')
       .then(response => response.json())
       .then(allRunners => {
@@ -227,6 +227,44 @@
     trigger4.addEventListener("click", toggleModal4);
     closeButton4.addEventListener("click", toggleModal4);
     window.addEventListener("click", windowOnClick4);
+  }
+
+  function listenForRunSubmit() {
+    const runForm = document.getElementById('run-form')
+    runForm.addEventListener('submit', e => {
+      e.preventDefault()
+      const min = e.target.minutes.value
+      const sec = e.target.seconds.value
+      const distance = e.target.distance.value
+      const rating = e.target.rating.value
+      const date = e.target.date.value
+      const run = {
+        pace: `${min}.${sec}`,
+        distance: distance,
+        rating: rating,
+        date: date
+      }
+      postRunToDatabase(run)
+      const runModal = document.getElementById('modal-add-run')
+      runModal.style.display = 'none'
+    })
+  }
+
+  function postRunToDatabase(run) {
+    fetch('http://localhost:3000/runs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        distance: run.distance,
+        pace: run.pace,
+        date: run.date,
+        rating: run.rating,
+        goal_id: 1
+      })
+    })
   }
 
 })();
