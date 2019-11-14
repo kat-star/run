@@ -7,6 +7,10 @@
   listenForCreateSubmit();
   addRunModal();
   newGoalModal();
+  goalCreate();
+
+  let runnerGoal;
+  
   listenForRunSubmit();
   let runner;
 
@@ -89,6 +93,7 @@
         runner = allRunners.find(runner => {
           return runner.name === runnerName
         })
+
         if (runner) {
           renderRunner(runner);
           showMainPage();
@@ -109,24 +114,24 @@
 
   //function to check if a goal exists (do we need to have an option whether a goal is completed? )
   function checkRunnerGoal(runner) {
-    // const goalStatus = runner.goals.find(goal => goal.status === 'active')
     const runnerId = runner.id
-    let runnerGoal;
-    fetch('http://localhost:3000/goals/')
+    
+    fetch('http://localhost:3000/goals')
       .then(response => response.json()) 
       .then(allGoals => {
 
         runnerGoal = allGoals.find(goal => {
-          return ((goal.runnerId == runnerId) && goal.active)
+          return goal.runner_id === runnerId
         })
-        
+        console.log
+
         if (runnerGoal) {
-          showGoalProgressMeter()
-        } else {
+          showGoalProgressMeter();
+          } else {
           showAddGoal();
         }
+
       })
-    
   }
 
 // show goal progress if goal is created
@@ -210,6 +215,7 @@
 
   // new goal for modal
   function newGoalModal() {
+    initialGoalView();
     const modal4 = document.getElementById("modal-goal");
     const trigger4 = document.getElementById("trigger-goal");
     const closeButton4 = document.getElementById("close-goal");
@@ -224,9 +230,41 @@
       }
     }
 
+
     trigger4.addEventListener("click", toggleModal4);
     closeButton4.addEventListener("click", toggleModal4);
     window.addEventListener("click", windowOnClick4);
+  }
+
+  function goalCreate() {
+    const goalCategory = document.getElementById('goal-category')
+    goalCategory.addEventListener('change', event => {
+      const categoryType = event.target.value;
+      console.log(categoryType)
+
+      if (categoryType === 'pace') {
+        showPaceEntry();
+      } else if (categoryType === 'mileage') {
+        showMileageEntry();
+      }
+    })
+  }
+
+  function initialGoalView() {
+    document.getElementById('pace-div').style.display = "none"
+    document.getElementById('mileage-div').style.display = "none"
+  }
+
+  function showPaceEntry() {
+    document.getElementById('pace-div').style.display = ""
+    // document.getElementById('new-goal').style.display = "none"
+    document.getElementById('mileage-div').style.display = "none"
+  }
+
+  function showMileageEntry() {
+    document.getElementById('pace-div').style.display = "none"
+    // document.getElementById('new-goal').style.display = "none"
+    document.getElementById('mileage-div').style.display = ""
   }
 
   function listenForRunSubmit() {
