@@ -10,6 +10,9 @@
   goalCreate();
   listenForGoalSelection();
   listenForRunSubmit();
+  addEventListenerDeleteAccount();
+  editAccountModal();
+  listenForEditSubmit()
   let runnerGoal;
   let runner;
   
@@ -64,6 +67,10 @@
   function showMainPage() {
     document.getElementById('main-page').style.display = ""
     document.getElementById('login-page').style.display = "none"
+    const createModal = document.getElementById('modal-create')
+    createModal.style.display = 'none'
+    const loginModal = document.getElementById('modal-login')
+    loginModal.style.display = 'none'
   }
 
   //listen for login 
@@ -185,9 +192,9 @@
             })
           }).then(resp => resp.json())
             .then(runnerr => {
-              renderRunner(runner);
+              renderRunner(runnerr);
               showMainPage();
-              runner = runnerr;
+              runner = runnerr
             });
         }
       })
@@ -299,10 +306,11 @@
         pace: run.pace,
         date: run.date,
         rating: run.rating,
-        goal_id: runnerGoal.id
+        goal_id: runnerGoal.id // need to change this to current goal
       })
-    })
+    }) // need to call on function to update goal status
   }
+
 
   function listenForGoalSelection() {
     const goalCategory = document.getElementById('goal-category')
@@ -358,6 +366,73 @@
     .then(postedGoal => {
       console.log(postedGoal)
     })
+  }
+
+
+
+  function editAccountModal() {
+    const modal5 = document.getElementById("modal-edit");
+    const trigger5 = document.getElementById("trigger-edit");
+    const closeButton5 = document.getElementById("close-edit");
+
+    function toggleModal5() {
+      modal5.classList.toggle("show-modal");
+    }
+
+    function windowOnClick5(event) {
+      if (event.target === modal5) {
+        toggleModal5();
+      }
+    }
+
+    trigger5.addEventListener("click", toggleModal5);
+    closeButton5.addEventListener("click", toggleModal5);
+    window.addEventListener("click", windowOnClick5);
+  }
+
+  function listenForEditSubmit() {
+    const editForm = document.getElementById('edit')
+    editForm.addEventListener('submit', e => {
+      e.preventDefault()
+      const newName = e.target.name.value
+      patchToDatabase(newName);
+    })
+  }
+
+  function patchToDatabase(newName) {
+    fetch(`http://localhost:3000/runners/${runner.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: newName
+      })
+    }).then(resp => resp.json())
+    .then(runner => { 
+      renderRunner(runner)
+      const editModal = document.getElementById('modal-edit')
+      editModal.style.display = 'none'
+      editAccountModal()
+
+    })
+  }
+
+  function resetShowPage() {
+    showLoginPage();
+    createAccountModal();
+    loginModal();
+  }
+
+  function addEventListenerDeleteAccount() {
+    const deleteButton = document.getElementById('delete')
+    deleteButton.addEventListener('click', e => {
+      fetch(`http://localhost:3000/runners/${runner.id}`, {
+        method: 'DELETE'
+      }).then(resetShowPage())
+    })
+    
   }
 
 })();

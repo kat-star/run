@@ -217,6 +217,7 @@
 
               <form id="add-goal">
 
+
                 <select id="goal-category">
                   <option value="base">Please select:</option>
                   <option value="pace" id="goal-pace" name="pace">Pace</option>
@@ -377,7 +378,10 @@
 
                 </form>
             
+
             </div>
+            </div>
+          </div>
 
             <div id="goal-meter">
               <div class="bar-container" style="height: 500px;">
@@ -403,16 +407,35 @@
                 </div> <!-- /.goal-bar -->
               </div>
             </div>
-          </div> 
-        </div>
+           
+        
       </div>
       <div id="stats-container" class="runner-info"> 
         <header>Your Stats</header>
+        Miles Ran to Date<div id="miles-ran">100</div>
+        Run Streak<div id="run-streak">2</div>
+        # of Races Completed<div id="num-races">10</div>
+        Races<div id="miles-ran">
+          <ul>
+          </ul>
+        </div>
       </div>
       <div id="awards-container" class="runner-info">
         <header>Awards</header>
       </div>
-    </div> 
+    </div>
+    <button class="trigger" id="trigger-edit">Edit Account</button>
+        <div class="modal" id="modal-edit">
+          <div class="modal-content">
+            <span class="close-button" id="close-edit">&times;</span>
+            <h3>Please Enter Your Name:</h3>
+            <form id="edit">
+              <input type="text" name="name" placeholder="Name">
+              <input type="submit" value="Edit Account" id="edit-btn">
+            </form>
+          </div>
+        </div>
+    <button id=delete>Delete Account</button>
    </div>
    <script type="application/javascript" src="src/index.js" charset="UTF-8"></script>
   </body>
