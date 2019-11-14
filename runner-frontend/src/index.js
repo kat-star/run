@@ -8,7 +8,8 @@
   addRunModal();
   newGoalModal();
   listenForGoalClick();
-  listenForGoalTypeSelection();
+  // listenForGoalTypeSelection();
+  // listenForGoalSubmission();
   listenForRunSubmit();
   addEventListenerDeleteAccount();
   editAccountModal();
@@ -252,6 +253,7 @@
       } else if (categoryType === 'mileage') {
         showMileageEntry();
       }
+      listenForGoalSubmission(categoryType)
     })
   }
 
@@ -309,17 +311,18 @@
   }
 
 
-  function listenForGoalTypeSelection() {
-    const goalCategory = document.getElementById('goal-category-edit')
-    goalCategory.addEventListener('change', event => {
-      const goalType = event.target.value
-      listenForGoalSubmission(goalType)
-    })
-  }
+  // function listenForGoalTypeSelection() {
+  //   const goalCategory = document.getElementById('goal-category-edit')
+  //   goalCategory.addEventListener('change', event => {
+  //     const goalType = event.target.value
+  //     listenForGoalSubmission(goalType)
+  //   })
+  // }
 
   function listenForGoalSubmission(goalType) {
     const goalDiv = document.getElementById('add-goal')
     goalDiv.addEventListener('submit', event => {
+      console.log(event.target)
       event.preventDefault();
 
       const category = goalType;
@@ -357,7 +360,7 @@
     })      
     .then(response => response.json())
     .then(postedGoal => {
-      console.log(postedGoal)
+      runnerGoal = postedGoal
     })
   }
 
@@ -515,9 +518,7 @@
         category: category,
         value: value
       }
-
       patchGoalToDatabase(newGoal);
-      
     })
   }
 
