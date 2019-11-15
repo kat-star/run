@@ -7,9 +7,9 @@
   </head>
   <body>
    <div id="login-page">
-     <header><h1>Welcome to Running Goals</h1></header>
+     <header><h1 class="glow">Welcome to Running Goals</h1></header>
      <div id="login-container">
-       <h3>Please choose an option below:</h3>
+       <h2>Please choose an option below:</h2>
        <button class="trigger" id="trigger-create">Create Account</button>
         <div class="modal" id="modal-create">
           <div class="modal-content">
@@ -38,7 +38,7 @@
 
    <div id="main-page">
     <header>
-      <h1 id="welcome"></h1>
+      <h1 id="welcome" class="glow"></h1>
       <button class="trigger" id="trigger-add-run">Add Run</button>
         <div class="modal" id="modal-add-run">
           <div class="modal-content">
@@ -206,7 +206,7 @@
     <div class="parent">
 
       <div id="goals-container" class="runner-info">
-        <header>Goal Progress
+        <header><h2>Goal Progress</h2>
           <button id="delete-goal">Delete Goal</button>
           <button class="trigger" id="trigger-edit-goal">Edit Goal</button>
           <!-- <button class="trigger" id="trigger-delete-goal">Delete Goal</button> -->
@@ -552,21 +552,21 @@
             </div>
           </div>
 
+          <div id="runner-goal-div"></div>
+
             <div id="goal-meter">
-              <div id="runner-goal-div"></div>
+              
               <div id="grad1">
                 <div id="bar">
                   <div id="status"></div>
                   
                 </div>
               </div>
-              <button type="button" id="goal-increaser">See Your Progress</button>
             </div>
            
-        
       </div>
       <div id="stats-container" class="runner-info"> 
-        <header>Your Stats</header>
+        <header><h2>Your Stats</h2></header>
         Miles Ran to Date<div id="miles-ran"></div>
         Run Streak<div id="run-streak"></div>
         # of Races Completed<div id="num-races"></div>
@@ -577,7 +577,7 @@
         <div id="quotes"></div>
       </div>
       <div id="awards-container" class="runner-info">
-        <header>Awards</header>
+        <header><h2>Awards</h2></header>
       </div>
     </div>
     <button class="trigger" id="trigger-edit">Edit Account</button>

@@ -15,14 +15,10 @@
   editGoalModal();
   listenForGoalEditClick();
   listenForEditGoalSubmission();
-
   addQuotesToStatsDiv()
-
   addEventListenerDeleteGoal();
   addEventListenerGoalProgress();
-
   
- 
   let runnersRuns;
   let runnerGoal;
   let runner;
@@ -151,14 +147,36 @@
         })
 
         if (runnerGoal) {
+          updateGoalDiv();
           showGoalProgressMeter();
-          // myFunction();
+          getRunnerRuns(function() {
+            progressMeter();
+          });
+          
           } else {
           showAddGoal();
         }
 
       })
   }
+
+  function updateGoalDiv() {
+    let goalValue;
+    const goalCat = runnerGoal.category;
+    if (goalCat === 'pace') {
+      const goalLimit = runnerGoal.value.toString().split(".")
+      const mins = goalLimit[0]
+      const secs = goalLimit[1]
+      goalValue = `Pace ${mins}:${secs}`
+    } else if (goalCat === 'mileage') {
+      goalValue = `To Run ${runnerGoal.value} Miles`
+    }
+
+    const goalName = document.getElementById('runner-goal-div')
+    goalName.textContent = `GOAL ~ ${goalValue}` 
+
+  }
+
 
 // show goal progress if goal is created
   function showGoalProgressMeter() {
@@ -167,7 +185,9 @@
     document.getElementById('trigger-edit-goal').style.display = ""
     document.getElementById('trigger-add-run').style.display = ""
     document.getElementById('delete-goal').style.display = ""
+    document.getElementById('runner-goal-div').style.display = ""
   }
+
 
   function showAddGoal() {
     document.getElementById('goal-meter').style.display = "none"
@@ -175,6 +195,7 @@
     document.getElementById('trigger-edit-goal').style.display = "none"
     document.getElementById('trigger-add-run').style.display = "none"
     document.getElementById('delete-goal').style.display = "none"
+    document.getElementById('runner-goal-div').style.display = "none"
   }
 
 
@@ -326,10 +347,6 @@
       }
       postRunToDatabase(run)
 
-      progressMeter()
-      // const runModal = document.getElementById('modal-add-run')
-      // runModal.style.display = 'none'
-
     })
   }
 
@@ -350,25 +367,31 @@
       })
     }).then(resp => resp.json())
       .then(run => {
-
-        updateMilesAfterNewRun(run)
-        streak = run.runner_streak
-        currentStreaksStats()
+        
+        updateMilesAfterNewRun(run);
+        streak = run.runner_streak;
+        currentStreaksStats();
+        getRunnerRuns(function () {
+          progressMeter();
+        });
 
 // need to call on function to update goal status 
       }) 
   }
 
-  
+  function getRunnerRuns(callback) {
+    fetch('http://localhost:3000/runs')
+    .then(response => response.json())
+    .then(allRuns => {
 
-
-  // function listenForGoalTypeSelection() {
-  //   const goalCategory = document.getElementById('goal-category-edit')
-  //   goalCategory.addEventListener('change', event => {
-  //     const goalType = event.target.value
-  //     listenForGoalSubmission(goalType)
-  //   })
-  // }
+      runnersRuns = allRuns.filter(run => {
+         return run.runner_id === runner.id;
+      })
+      if (callback) {
+        callback();
+      }
+    })
+  }
 
   function listenForGoalSubmission(goalType) {
     const goalDiv = document.getElementById('add-goal')
@@ -391,8 +414,6 @@
       }
       postGoalToDatabase(newGoal);
 
-      progressMeter();
-
     })
   }
 
@@ -413,7 +434,11 @@
     .then(response => response.json())
     .then(postedGoal => {
       runnerGoal = postedGoal;
+      updateGoalDiv();
       showGoalProgressMeter();
+      getRunnerRuns(function () {
+        progressMeter();
+      });
     })
   }
 
@@ -473,7 +498,6 @@
       })
       showLoginPage()
     })
-    
   }
 
   function editGoalModal() {
@@ -505,9 +529,7 @@
               secParse = secParseAgain
             }
         }
-
         secEle.value = secParse;
-        
       } else if (goalCategoryEdit.value === 'mileage') {
         showMileageGoal();
         const mileage = document.getElementById('miles-edit')
@@ -551,7 +573,6 @@
   function showPaceGoal() {
     document.getElementById('pace-div-edit').style.display = ""
     document.getElementById('mileage-div-edit').style.display = "none"
-
   }
 
   function showMileageGoal() {
@@ -581,8 +602,9 @@
         value: value
       }
       patchGoalToDatabase(newGoal);
-      progressMeter();
-
+      getRunnerRuns(function () {
+        progressMeter();
+      });
     })
   }
 
@@ -603,7 +625,6 @@
       .then(response => response.json())
       .then(updatedGoal => {
         runnerGoal = updatedGoal;
-        
       })
   }
 
@@ -616,64 +637,41 @@
     })
   }
 
-  function getRunsByRunner() {
-    fetch('http://localhost:3000/runs')
-    .then(response => response.json())
-    .then(allRuns => {
-      runnersRuns = allRuns.filter(run => {
-        return run.goal_id === runnerGoal.id
-      })
-      console.log(allRuns)
-    })
-  }
-
   function progressMeter() {
-    getRunsByRunner()
+    const goalCategory = runnerGoal.category;
+    const goalValue = runnerGoal.value;
+    const numberOfRuns = runnersRuns.length;
 
-    let goalValue;
-
-    const goalCat = runnerGoal.category;
-    if (goalCat === 'pace') {
-      const goalLimit = runnerGoal.value.toString().split()
-      const mins = goalLimit[0]
-      const secs = goalLimit[1]
-      goalValue = `Pace ${mins}:${secs}`
-    } else if (goalCat === 'mileage') {
-      goalValue = `To Run ${runnerGoal.Value} Miles`
+    let totalSoFar;
+    let progress;
+    
+    if (goalCategory === 'pace') {
+      totalSoFar = runnersRuns.reduce(
+        (accumulator, run) => accumulator + run.pace,
+        0)
+      progress = goalValue / (totalSoFar / numberOfRuns)
+    } else if (goalCategory === 'mileage') {
+      totalSoFar = runnersRuns.reduce(
+        (accumulator, run) => accumulator + run.distance, 0
+      )
+      progress = totalSoFar / goalValue;
     }
 
-    // let runCount; //total number of runs
-    const goalName = document.getElementById('runner-goal-div')
+    progress = parseInt(progress * 100)
+    console.log(progress, goalValue, totalSoFar, numberOfRuns)
 
-    goalName.textContent = `GOAL: ${goalValue}` 
-
-  }
-
-  function addEventListenerGoalProgress() {
-    const button = document.getElementById('goal-increaser')
-    button.addEventListener('click', event => {
-      myFunction();
-    }) 
-  }
-
-
-  function myFunction() {
-    var h = 0;
-
+    let h = progress * 2;
     var x;
 
     if (x == null) {
-      x = setInterval(myFunction1, 160);
+      x = setTimeout(myFunction1, 160);
     }
+
     function myFunction1() {
-
-      h++;
-
       document.getElementById("bar").style.height =
-        h + "px";
-      document.getElementById("status").innerHTML = Math.floor(h / 2) + "%"
-      if (document.getElementById("bar").style.height == 200 + "px") {
-        clearInterval(x);
+        Math.min(h, 200) + "px";
+      document.getElementById("status").innerHTML = `${progress}%`
+      if (progress >= 100) {
         appendAward();
       }
     }
@@ -687,7 +685,6 @@
     awardContainer.appendChild(newDiv)
 
   }
-
 
   function currentMilesStats() {
     const milesDiv = document.getElementById('miles-ran');
