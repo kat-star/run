@@ -50,7 +50,13 @@
 body {
   font-family: 'Open Sans', sans-serif;
   text-align: center;
-  background: lightblue;
+  background: #D8BFD8;
+  font-family: cursive;
+  font-family: Optima, sans-serif;
+}
+
+#awards-container div {
+  font-size: 50px;
 }
 
 
@@ -62,9 +68,6 @@ body {
   margin-left: 5rem
 }
 
-body {
-  background: lightblue;
-}
 
 #grad1 {
   width: 50px;
@@ -81,6 +84,7 @@ body {
   background: -o-linear-gradient(red, yellow, green, purple, lightblue);
   background: -moz-linear-gradient(red, yellow, green, purple, lightblue);
   background: linear-gradient(to bottom right, red, yellow, green, purple, lightblue);
+  transition: .5s height;
 }
 
 #status {
@@ -89,6 +93,29 @@ body {
   transform: rotate(180deg);
 }
 
+
 ul {
   list-style-position: inside;
 }
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
+/* animation for the header text that make computer HOT */
+
+/* .glow {
+  font-size: 80px;
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+} */
+
+
