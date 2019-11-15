@@ -20,3 +20,6 @@ run2 = Run.create(distance: 5.00, pace: 8.30, date: '2019-11-11', rating: 3, goa
 run1 = Run.create(distance: 3.00, pace: 10.00, date: '2019-01-09', rating: 2, goal: goal1, runner: kat)
 run1 = Run.create(distance: 3.00, pace: 10.00, date: '2019-01-20', rating: 2, goal: goal1, runner: kat)
 
+race1 = Race.create(category: 'Half Marathon', date: '2019-01-28', runner: kat)
+race1 = Race.create(category: 'Marathon', date: '2019-07-07', runner: kat)
+race1 = Race.create(category: '10K', date: '2019-03-21', runner: kat)

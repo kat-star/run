@@ -570,9 +570,29 @@
         <header><h2>Your Stats</h2></header>
         Miles Ran to Date<div id="miles-ran"></div>
         Run Streak<div id="run-streak"></div>
-        # of Races Completed<div id="num-races"></div>
-        Races<div id="miles-ran">
-          <ul>
+        <!-- # of Races Completed<div id="num-races"></div> -->
+        Races
+        <button class="trigger" id="trigger-race">Add Race</button>
+        <div class="modal" id="modal-race">
+          <div class="modal-content">
+            <span class="close-button" id="close-race">&times;</span>
+            <h3>Please Enter Your Race:</h3>
+            <form id="race">
+              <select name="category">
+                <option value="5k">5K</option>
+                <option value="10k">10K</option>
+                <option value="half-marathon">Half Marathon</option>
+                <option value="marathon">Marathon</option>
+                <option value="50k">50K</option>
+                <option value="100-miles">100 Miles</option>
+              </select>
+              <input type="date" name="date">
+              <input type="submit" value="Add Race" id="add-race-btn">
+            </form>
+          </div>
+        </div>
+        <div>
+          <ul id="races-ran">
           </ul>
         </div>
       </div>
@@ -592,6 +612,7 @@
           </div>
         </div>
     <button id=delete>Delete Account</button>
+    <div id="quotes"></div>
    </div>
    <script type="application/javascript" src="src/index.js" charset="UTF-8"></script>
   </body>
