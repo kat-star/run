@@ -12,7 +12,9 @@ class RunsController < ApplicationController
   def create
     run = Run.new(run_params)
     if run.save
-      render json: run
+      runner = Runner.find(run.runner_id)
+      runner.calculate_streak 
+      render json: { run: run, runner_streak: runner.streak }
     else
       render json: {error: "Something went wrong, try again"}
     end
@@ -39,6 +41,6 @@ class RunsController < ApplicationController
   private
 
   def run_params
-    params.require(:run).permit(:distance, :pace, :date, :rating, :goal_id)
+    params.require(:run).permit(:distance, :pace, :date, :rating, :goal_id, :runner_id)
   end
 end

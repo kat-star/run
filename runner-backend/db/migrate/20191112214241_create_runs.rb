@@ -6,6 +6,7 @@ class CreateRuns < ActiveRecord::Migration[6.0]
       t.date :date
       t.integer :rating
       t.references :goal, null: false, foreign_key: true
+      t.references :runner, null: false, foreign_key: true
 
       t.timestamps
     end

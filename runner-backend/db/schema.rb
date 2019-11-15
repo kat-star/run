@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 2019_11_12_214241) do
 
   create_table "runners", force: :cascade do |t|
     t.string "name"
+    t.float "miles", default: 0.0
+    t.integer "streak", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -37,11 +39,14 @@ ActiveRecord::Schema.define(version: 2019_11_12_214241) do
     t.date "date"
     t.integer "rating"
     t.bigint "goal_id", null: false
+    t.bigint "runner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["goal_id"], name: "index_runs_on_goal_id"
+    t.index ["runner_id"], name: "index_runs_on_runner_id"
   end
 
   add_foreign_key "goals", "runners"
   add_foreign_key "runs", "goals"
+  add_foreign_key "runs", "runners"
 end

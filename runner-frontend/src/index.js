@@ -17,8 +17,11 @@
   editGoalModal();
   listenForGoalEditClick();
   listenForEditGoalSubmission();
+  
   let runnerGoal;
   let runner;
+  let currentMiles;
+  let streak;
   
   function showLoginPage() {
     document.getElementById('main-page').style.display = "none"
@@ -107,6 +110,10 @@
         if (runner) {
           renderRunner(runner);
           showMainPage();
+          currentMiles = runner.miles;
+          streak = runner.streak;
+          currentMilesStats();
+          currentStreaksStats();
         } else {
           throw 'No Runner Found';
         }
@@ -183,6 +190,9 @@
         if (runner) {
           renderRunner(runner);
           showMainPage();
+          currentMiles = runner.miles;
+          streak = runner.streak;
+          currentMilesStats();
           throw 'You already have an account.'
         } else {
           fetch('http://localhost:3000/runners', {
@@ -199,6 +209,10 @@
               renderRunner(runnerr);
               showMainPage();
               runner = runnerr
+              currentMiles = runnerr.miles
+              streak = runnerr.streak
+              currentMilesStats()
+              currentStreaksStats();
             });
         }
       })
@@ -232,6 +246,8 @@
     const modal4 = document.getElementById("modal-goal");
     const trigger4 = document.getElementById("trigger-goal");
     const closeButton4 = document.getElementById("close-goal");
+    const closeForm4 = document.getElementById("add-goal-btn");
+    const closeForm40 = document.getElementById("add-goal-btn-2");
 
     function toggleModal4() {
       modal4.classList.toggle("show-modal");
@@ -245,6 +261,8 @@
     trigger4.addEventListener("click", toggleModal4);
     closeButton4.addEventListener("click", toggleModal4);
     window.addEventListener("click", windowOnClick4);
+    closeForm4.addEventListener("click", toggleModal4);
+    closeForm40.addEventListener("click", toggleModal4);
   }
 
   function listenForGoalClick() {
@@ -292,8 +310,6 @@
         date: date
       }
       postRunToDatabase(run)
-      // const runModal = document.getElementById('modal-add-run')
-      // runModal.style.display = 'none'
     })
   }
 
@@ -309,10 +325,14 @@
         pace: run.pace,
         date: run.date,
         rating: run.rating,
-        goal_id: runnerGoal.id 
+        goal_id: runnerGoal.id, 
+        runner_id: runner.id
       })
     }).then(resp => resp.json())
-      .then(goal => {
+      .then(run => {
+        updateMilesAfterNewRun(run)
+        streak = run.runner_streak
+        currentStreaksStats()
 // need to call on function to update goal status 
       }) 
   }
@@ -329,18 +349,16 @@
   function listenForGoalSubmission(goalType) {
     const goalDiv = document.getElementById('add-goal')
     goalDiv.addEventListener('submit', event => {
-      console.log(event.target)
       event.preventDefault();
 
       const category = goalType;
       let value;
-
       if (goalType === 'pace') {
         const min = event.target.minutes.value
         const sec = event.target.seconds.value
         value = `${min}.${sec}`
       } else if (goalType === 'mileage') {
-        value = event.target.mileage.value
+        value = event.target.distance.value
       }
 
       const newGoal = {
@@ -348,6 +366,7 @@
         value: value
       }
       postGoalToDatabase(newGoal);
+      showGoalProgressMeter();
     })
   }
 
@@ -424,7 +443,8 @@
     deleteButton.addEventListener('click', e => {
       fetch(`http://localhost:3000/runners/${runner.id}`, {
         method: 'DELETE'
-      }).then(showLoginPage())
+      })
+      showLoginPage()
     })
     
   }
@@ -444,7 +464,7 @@
         const minEle = document.getElementById('edit-mins')
         minEle.value = parseInt(runnerGoal.value)
         const secEle = document.getElementById('edit-secs')
-        let secParse = runnerGoal.value.toString().split(".")[1]
+        let secParse = runnerGoal.value.toString().split(".")[1] 
           if (secParse.length === 1) {
             secParse = secParse + '0'
           }
@@ -541,6 +561,36 @@
       })
     const goalModal = document.getElementById('modal-goal-edit')
     goalModal.style.display = 'none'
+  }
+
+
+  function currentMilesStats() {
+    const milesDiv = document.getElementById('miles-ran');
+    milesDiv.textContent = currentMiles
+  }
+
+  function updateMilesAfterNewRun(run) {
+    currentMiles += run.run.distance
+    currentMilesStats()
+    updateMilesDatabase(currentMiles)
+  }
+
+  function updateMilesDatabase(miles) {
+    fetch(`http://localhost:3000/runners/${runner.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        'miles': miles
+      })
+    })
+  }
+
+  function currentStreaksStats() {
+    const streakDiv = document.getElementById('run-streak')
+    streakDiv.textContent = streak
   }
 
 })();

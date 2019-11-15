@@ -39,6 +39,6 @@ class RunnersController < ApplicationController
   private
 
   def runner_params
-    params.require(:runner).permit(:name)
+    params.require(:runner).permit(:name, :miles, :streak)
   end
 end
