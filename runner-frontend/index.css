@@ -88,3 +88,7 @@ body {
   font-weight: bold;
   transform: rotate(180deg);
 }
+
+ul {
+  list-style-position: inside;
+}

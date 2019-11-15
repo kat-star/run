@@ -15,11 +15,12 @@
   editGoalModal();
   listenForGoalEditClick();
   listenForEditGoalSubmission();
-
   addQuotesToStatsDiv()
-
   addEventListenerDeleteGoal();
   addEventListenerGoalProgress();
+  addRaceModal();
+  addRaceSubmit();
+  
 
   
  
@@ -123,6 +124,7 @@
           streak = runner.streak;
           currentMilesStats();
           currentStreaksStats();
+          fetchRaces();
 
         } else {
           throw 'No Runner Found';
@@ -206,6 +208,7 @@
           currentMiles = runner.miles;
           streak = runner.streak;
           currentMilesStats();
+          fetchRaces();
           throw 'You already have an account.'
         } else {
           fetch('http://localhost:3000/runners', {
@@ -226,6 +229,7 @@
               streak = runnerr.streak
               currentMilesStats()
               currentStreaksStats();
+              fetchRaces();
             });
         }
       })
@@ -327,9 +331,6 @@
       postRunToDatabase(run)
 
       progressMeter()
-      // const runModal = document.getElementById('modal-add-run')
-      // runModal.style.display = 'none'
-
     })
   }
 
@@ -623,7 +624,7 @@
       runnersRuns = allRuns.filter(run => {
         return run.goal_id === runnerGoal.id
       })
-      console.log(allRuns)
+      // console.log(allRuns)
     })
   }
 
@@ -725,6 +726,112 @@
     const quotesDiv = document.getElementById('quotes')
     quotesDiv.innerText = quotes[Math.floor ( Math.random() * quotes.length )]
     
+  }
+
+  function addRaceModal() {
+    const modal7 = document.getElementById("modal-race");
+    const trigger7 = document.getElementById("trigger-race");
+    const closeButton7 = document.getElementById("close-race");
+    const submitClose7 = document.getElementById("add-race-btn");
+
+    function toggleModal7() {
+      modal7.classList.toggle("show-modal");
+    }
+
+    function windowOnClick7(event) {
+      if (event.target === modal7) {
+        toggleModal7();
+      }
+    }
+
+    trigger7.addEventListener("click", toggleModal7);
+    closeButton7.addEventListener("click", toggleModal7);
+    window.addEventListener("click", windowOnClick7);
+    submitClose7.addEventListener("click", toggleModal7)
+  }
+
+  function addRaceSubmit() {
+    const raceForm = document.getElementById('race')
+    raceForm.addEventListener('submit', e => {
+      e.preventDefault()
+      const cat = e.target.category.value
+      const date = e.target.date.value
+
+      const race = {
+        category: cat,
+        date: date,
+        active: true
+      }
+      postRaceToDatabase(race)
+     
+    })
+  }
+
+  function fetchRaces() {
+    fetch('http://localhost:3000/races')
+      .then(resp => resp.json())
+      .then(races => {
+        races.forEach(race => {
+          if (race.runner_id === runner.id) {
+              showRace(race)
+          }
+        });
+      })
+  }
+
+  function showRace(race) {
+    const formattedDate = race.date.st
+    const raceList = document.getElementById('races-ran')
+    const newLi = document.createElement('li')
+    newLi.id = race.id
+    newLi.textContent = `${race.category}, ${race.date}`
+    raceList.appendChild(newLi)
+    if (race.active === true){
+      addCompleteBtn(newLi)
+    }
+  }
+
+  function addCompleteBtn(newLi) {
+    const completeBtn = document.createElement('button')
+    completeBtn.id = 'complete=race'
+    completeBtn.textContent = 'Complete'
+    newLi.appendChild(completeBtn)
+    completeRaceEventListener(completeBtn)
+  }
+
+  function postRaceToDatabase(race) {
+    fetch('http://localhost:3000/races', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        category: race.category,
+        date: race.date,
+        runner_id: runner.id
+      })
+    }).then(resp => resp.json())
+      .then(race => showRace(race))
+  }
+
+  function completeRaceEventListener(completeBtn) {
+    completeBtn.addEventListener('click', e => {
+       const id = e.target.parentElement.id
+       fetch(`http://localhost:3000/races/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          active: false
+        })
+       }).then(resp => resp.json())
+        .then(race => {
+          e.target.style.display = 'none'
+        })
+    })
   }
 
 })();
