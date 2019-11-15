@@ -17,6 +17,7 @@
   editGoalModal();
   listenForGoalEditClick();
   listenForEditGoalSubmission();
+  addQuotesToStatsDiv()
   
   let runnerGoal;
   let runner;
@@ -591,6 +592,15 @@
   function currentStreaksStats() {
     const streakDiv = document.getElementById('run-streak')
     streakDiv.textContent = streak
+  }
+
+  setInterval(function(){addQuotesToStatsDiv()}, 10000)
+
+  function addQuotesToStatsDiv() {
+    quotes = ["'Just do it.' Nike", "'Run when you can, walk if you have to, crawl if you must; just never give up.' Dean Karnazes", "'I don’t run to add days to my life, I run to add life to my days.' Ronald Rook","'Running is about finding your inner peace, and so is a life well lived.' Dean Karnazes", "'Pain is inevitable. Suffering is optional.' Haruki Murakami", "'Pain is temporary. Quitting lasts forever.' Lance Armstrong"]
+    const quotesDiv = document.getElementById('quotes')
+    quotesDiv.innerText = quotes[Math.floor ( Math.random() * quotes.length )]
+    
   }
 
 })();
