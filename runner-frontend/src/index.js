@@ -18,10 +18,13 @@
   addEventListenerDeleteGoal();
   addEventListenerGoalProgress();
   
-  // progressMeter()
+ 
+  let runnersRuns;
   let runnerGoal;
   let runner;
-  let runnersRuns;
+  let currentMiles;
+  let streak;
+
   
   function showLoginPage() {
     document.getElementById('main-page').style.display = "none"
@@ -110,7 +113,13 @@
         if (runner) {
           renderRunner(runner);
           showMainPage();
-          // myFunction();
+
+     
+          currentMiles = runner.miles;
+          streak = runner.streak;
+          currentMilesStats();
+          currentStreaksStats();
+
         } else {
           throw 'No Runner Found';
         }
@@ -190,6 +199,9 @@
         if (runner) {
           renderRunner(runner);
           showMainPage();
+          currentMiles = runner.miles;
+          streak = runner.streak;
+          currentMilesStats();
           throw 'You already have an account.'
         } else {
           fetch('http://localhost:3000/runners', {
@@ -206,6 +218,10 @@
               renderRunner(runnerr);
               showMainPage();
               runner = runnerr
+              currentMiles = runnerr.miles
+              streak = runnerr.streak
+              currentMilesStats()
+              currentStreaksStats();
             });
         }
       })
@@ -239,7 +255,9 @@
     const modal4 = document.getElementById("modal-goal");
     const trigger4 = document.getElementById("trigger-goal");
     const closeButton4 = document.getElementById("close-goal");
+
     const submitClose4 = document.getElementById("add-goal-btn")
+
 
     function toggleModal4() {
       modal4.classList.toggle("show-modal");
@@ -253,7 +271,9 @@
     trigger4.addEventListener("click", toggleModal4);
     closeButton4.addEventListener("click", toggleModal4);
     window.addEventListener("click", windowOnClick4);
+
     submitClose4.addEventListener("click", toggleModal4)
+
   }
 
   function listenForGoalClick() {
@@ -301,9 +321,11 @@
         date: date
       }
       postRunToDatabase(run)
+
       progressMeter()
       // const runModal = document.getElementById('modal-add-run')
       // runModal.style.display = 'none'
+
     })
   }
 
@@ -319,10 +341,16 @@
         pace: run.pace,
         date: run.date,
         rating: run.rating,
-        goal_id: runnerGoal.id 
+        goal_id: runnerGoal.id, 
+        runner_id: runner.id
       })
     }).then(resp => resp.json())
       .then(run => {
+
+        updateMilesAfterNewRun(run)
+        streak = run.runner_streak
+        currentStreaksStats()
+
 // need to call on function to update goal status 
       }) 
   }
@@ -345,7 +373,6 @@
 
       const category = goalType;
       let value;
-
       if (goalType === 'pace') {
         const min = event.target.minutes.value
         const sec = event.target.seconds.value
@@ -359,7 +386,9 @@
         value: value
       }
       postGoalToDatabase(newGoal);
+
       progressMeter();
+
     })
   }
 
@@ -437,7 +466,8 @@
     deleteButton.addEventListener('click', e => {
       fetch(`http://localhost:3000/runners/${runner.id}`, {
         method: 'DELETE'
-      }).then(showLoginPage())
+      })
+      showLoginPage()
     })
     
   }
@@ -458,6 +488,7 @@
         const minEle = document.getElementById('edit-mins')
         minEle.value = parseInt(runnerGoal.value)
         const secEle = document.getElementById('edit-secs')
+
         let secParse;
 
         if (runnerGoal.value.toString().length === 1) {
@@ -470,6 +501,7 @@
               secParse = secParseAgain
             }
         }
+
         secEle.value = secParse;
         
       } else if (goalCategoryEdit.value === 'mileage') {
@@ -650,6 +682,36 @@
     newDiv.textContent = emojis[Math.floor(Math.random() * emojis.length)]
     awardContainer.appendChild(newDiv)
 
+  }
+
+
+  function currentMilesStats() {
+    const milesDiv = document.getElementById('miles-ran');
+    milesDiv.textContent = currentMiles
+  }
+
+  function updateMilesAfterNewRun(run) {
+    currentMiles += run.run.distance
+    currentMilesStats()
+    updateMilesDatabase(currentMiles)
+  }
+
+  function updateMilesDatabase(miles) {
+    fetch(`http://localhost:3000/runners/${runner.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        'miles': miles
+      })
+    })
+  }
+
+  function currentStreaksStats() {
+    const streakDiv = document.getElementById('run-streak')
+    streakDiv.textContent = streak
   }
 
 })();
