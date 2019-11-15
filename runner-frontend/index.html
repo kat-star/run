@@ -207,7 +207,9 @@
 
       <div id="goals-container" class="runner-info">
         <header>Goal Progress
+          <button id="delete-goal">Delete Goal</button>
           <button class="trigger" id="trigger-edit-goal">Edit Goal</button>
+          <!-- <button class="trigger" id="trigger-delete-goal">Delete Goal</button> -->
           <div class="modal" id="modal-goal-edit">
             <div class="modal-content">
               <span class="close-button" id="close-goal">&times;</span>
@@ -303,7 +305,7 @@
                       <option value="58">58</option>
                       <option value="59">59</option>
                     </select><br>
-                    <input type="submit" value="Edit Goal" class="add-goal-btn">
+                    <input type="submit" value="Edit Goal" class="edit-goal-btn" id = 'edit-goal-btn1'>
                   </div>
                   <div id="mileage-div-edit">
                     miles:<select id="miles-edit" name="mileage">
@@ -367,15 +369,15 @@
                       <option value="58">58</option>
                       <option value="59">59</option>
                     </select><br>
-                <input type="submit" value="Edit Goal" id="edit-goal-btn">
+                <input type="submit" value="Edit Goal" class = "edit-goal-btn" id="edit-goal-btn2">
               </form>
             </div>
           </div>
-      
+        
         </header>
 
         <div id="new-goal">
-          <button class="trigger" id="trigger-goal">Add a New Goal</button>
+          <button id="trigger-goal">Add a New Goal</button>
           <div class="modal" id="modal-goal">
             <div class="modal-content">
               <span class="close-button" id="close-goal">&times;</span>
@@ -475,7 +477,7 @@
                     <option value="59">59</option>
                   </select><br>
                   <!-- <input type="text" name="pace" placeholder='pace'> -->
-                  <input type="submit" value="Add a Goal" class="add-goal-btn">
+                  <input type="submit" value="Add a Goal" class="add-goal-btn" id="add-goal-btn">
                 </div>
                 <div id="mileage-div">
                   miles:<select id="miles" name="distance">
@@ -539,7 +541,7 @@
                     <option value="58">58</option>
                     <option value="59">59</option>
                   </select><br>
-                  <input type="submit" value="Add a Goal" class="add-goal-btn">
+                  <input type="submit" value="Add a Goal" class="add-goal-btn" id="add-goal-btn">
                 </div>
 
                 </form>
@@ -550,28 +552,14 @@
           </div>
 
             <div id="goal-meter">
-              <div class="bar-container" style="height: 500px;">
-                <div class="goal-bar">
-                  <div class="bar-wrap">
-          
-                    <div class="bar" style="transform: translateY(55%);">
-                      <div class="bar-info">
-                        <div class="bar-info-inner">
-                      
-                        </div>
-                      </div>
-                    </div>
-                    <span class="bar-label"></span>
-                  </div>
-                  <div class="bar-labels">
-                    <span class="bar-label">100</span>
-                    <span class="bar-label">75</span>
-                    <span class="bar-label">50</span>
-                    <span class="bar-label">25</span>
-                    <span class="bar-label">0</span>
-                  </div>
-                </div> <!-- /.goal-bar -->
+              <div id="runner-goal-div"></div>
+              <div id="grad1">
+                <div id="bar">
+                  <div id="status"></div>
+                  
+                </div>
               </div>
+              <button type="button" id="goal-increaser">See Your Progress</button>
             </div>
            
         
