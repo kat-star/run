@@ -145,7 +145,7 @@
     fetch('http://localhost:3000/goals')
       .then(response => response.json()) 
       .then(allGoals => {
-
+        debugger
         runnerGoal = allGoals.find(goal => {
           return goal.runner_id === runnerId && goal.active
         })
@@ -153,10 +153,9 @@
         if (runnerGoal) {
           updateGoalDiv();
           showGoalProgressMeter();
-          getRunnerRuns(function() {
+          getRunnerRuns(function () {
             progressMeter();
           });
-          
           } else {
           showAddGoal();
         }
@@ -440,6 +439,7 @@
     .then(response => response.json())
     .then(postedGoal => {
       runnerGoal = postedGoal;
+      
       updateGoalDiv();
       showGoalProgressMeter();
       getRunnerRuns(function () {
@@ -679,8 +679,48 @@
       document.getElementById("status").innerHTML = `${progress}%`
       if (progress >= 100) {
         appendAward();
+        showGoalCompleteBtn();
+        listenForGoalComplete();
+        progress = 0;
       }
     }
+  }
+
+  function showGoalCompleteBtn() {
+    document.getElementById('complete-goal').style.display = ""
+  }
+
+  function hideGoalCompletebtn() {
+    document.getElementById('complete-goal').style.display = "none"
+  }
+
+    //function to show goal complete button (hidden unless progress >= 100)
+  function listenForGoalComplete() {
+    const completeButton = document.getElementById('complete-goal')
+    completeButton.addEventListener('click', event => {
+      fetch(`http://localhost:3000/goals/${runnerGoal.id}`, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          active: false
+        })
+      })
+        .then(response => response.json())
+        .then(updatedGoal => {
+          runnerGoal = updatedGoal;
+          // showAddGoal()
+          hideGoalCompletebtn();
+          renderGoalContainer(runner)
+          // updateGoalDiv();
+          // showGoalProgressMeter();
+          // getRunnerRuns(function () {
+          //   progressMeter();
+          // });
+        })
+      })
   }
 
   function appendAward() {
