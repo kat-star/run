@@ -2,6 +2,7 @@ class Runner < ApplicationRecord
   has_many :goals, dependent: :destroy
   has_many :runs, dependent: :destroy
   has_many :races, dependent: :destroy
+  has_many :awards, dependent: :destroy
   validates :name, uniqueness: true
 
   def calculate_streak 
