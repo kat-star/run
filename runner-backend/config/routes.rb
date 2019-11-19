@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :awards, only: [:index, :show, :update, :create, :destroy]
   resources :races, only: [:index, :show, :update, :create, :destroy]
   resources :runs, only: [:index, :show, :update, :create, :destroy]
   resources :goals, only: [:index, :show, :update, :create, :destroy]
