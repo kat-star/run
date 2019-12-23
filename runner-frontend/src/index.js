@@ -769,7 +769,6 @@
     .then(response => response.json())
     .then(newAward => {
       renderAwardContainer()
-      // renderAward(runner)
     })
   }
 
@@ -777,13 +776,13 @@
     fetch(`http://localhost:3000/awards?runner_id=${runner.id}`)
     .then(response => response.json())
     .then(runnerAwards => {
-      const awardContainer = document.getElementById('awards-container')
-      awardContainer.innerHTML = ""
+      const awardsList = document.getElementById('awards-list')
+      awardsList.innerHTML = ""
 
       runnerAwards.forEach(award => {
         newDiv = document.createElement('div')
         newDiv.textContent = `${award.name} Completed Goal`
-        awardContainer.appendChild(newDiv)
+        awardsList.appendChild(newDiv)
       })
     })
   }

@@ -59,6 +59,15 @@ body {
   font-size: 15px;
 }
 
+#awards-list {
+  border: none;
+}
+
+#awards-list div {
+  border: none;
+  border-top: 1px solid;
+}
+
 
 #welcome {
   margin-right: 30rem;
