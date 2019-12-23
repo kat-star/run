@@ -2,7 +2,7 @@
 
 Running Goals is a vanilla Javascript frontend/Ruby on Rails API backend application that helps a runner track their running goals.
 
-![gif of running app](run-training-gif.gif)
+![gif of running app](run-gif.gif)
 
 ## Features
 
