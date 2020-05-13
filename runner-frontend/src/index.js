@@ -131,7 +131,7 @@
   //renders runner to screen   
   function renderRunner(runner) {
     const welcomeHeader = document.getElementById('welcome')
-    welcomeHeader.textContent = `Welcome, ${runner.name}`
+    welcomeHeader.textContent = `${runner.name}'s Progress Report`
     renderGoalContainer(runner)
   }
 
