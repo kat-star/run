@@ -26,6 +26,7 @@
   let runner;
   let currentMiles;
   let streak;
+  const BACKEND_URL = 'https://running-goals.herokuapp.com'
 
   
   function showLoginPage() {
@@ -98,7 +99,7 @@
   //fetches runner
   function getRunner(runnerName) {
     
-    fetch('http://localhost:3000/runners')
+    fetch(`${BACKEND_URL}/runners`)
       .then(response => response.json())
       .then(allRunners => {
 
@@ -139,7 +140,7 @@
   function renderGoalContainer(runner) {
     const runnerId = runner.id
     
-    fetch('http://localhost:3000/goals')
+    fetch(`${BACKEND_URL}/goals`)
       .then(response => response.json()) 
       .then(allGoals => {
         runnerGoal = allGoals.find(goal => {
@@ -226,7 +227,7 @@
   }
 
   function createRunner(runnerName) {
-    fetch('http://localhost:3000/runners')
+    fetch(`${BACKEND_URL}/runners`)
       .then(response => response.json())
       .then(allRunners => {
 
@@ -246,7 +247,7 @@
           fetchRaces();
           throw 'You already have an account.'
         } else {
-          fetch('http://localhost:3000/runners', {
+          fetch(`${BACKEND_URL}/runners`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -367,7 +368,7 @@
   }
 
   function postRunToDatabase(run) {
-    fetch('http://localhost:3000/runs', {
+    fetch(`${BACKEND_URL}/runs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -396,7 +397,7 @@
   }
 
   function getRunnerRuns(callback) {
-    fetch('http://localhost:3000/runs')
+    fetch(`${BACKEND_URL}/runs`)
     .then(response => response.json())
     .then(allRuns => {
 
@@ -443,7 +444,7 @@
 
 
   function postGoalToDatabase(newGoal) {
-    fetch('http://localhost:3000/goals', {
+    fetch(`${BACKEND_URL}/goals`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -500,7 +501,7 @@
   }
 
   function patchToDatabase(newName) {
-    fetch(`http://localhost:3000/runners/${runner.id}`, {
+    fetch(`${BACKEND_URL}/${runner.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -519,7 +520,7 @@
   function addEventListenerDeleteAccount() {
     const deleteButton = document.getElementById('delete')
     deleteButton.addEventListener('click', e => {
-      fetch(`http://localhost:3000/runners/${runner.id}`, {
+      fetch(`${BACKEND_URL}/${runner.id}`, {
         method: 'DELETE'
       })
       showLoginPage()
@@ -634,7 +635,7 @@
   }
 
   function patchGoalToDatabase(newGoal) {
-    fetch(`http://localhost:3000/goals/${runnerGoal.id}`, {
+    fetch(`${BACKEND_URL}/${runnerGoal.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -661,7 +662,7 @@
   function addEventListenerDeleteGoal() {
     const deleteButton = document.getElementById('delete-goal')
     deleteButton.addEventListener('click', event => {
-      fetch(`http://localhost:3000/goals/${runnerGoal.id}`, {
+      fetch(`${BACKEND_URL}/${runnerGoal.id}`, {
         method: 'DELETE'
       }).then(showAddGoal())
     })
@@ -731,7 +732,7 @@
   function listenForGoalComplete() {
     const completeButton = document.getElementById('complete-goal')
     completeButton.addEventListener('click', event => {
-      fetch(`http://localhost:3000/goals/${runnerGoal.id}`, {
+      fetch(`${BACKEND_URL}/${runnerGoal.id}`, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -754,7 +755,7 @@
 
   function getAwardAfterCompleteGoal() {
     const emojis = ['💯', '👏', '🤩', '🎉', '🏆', '🥇']
-    fetch(`http://localhost:3000/awards`, {
+    fetch(`${BACKEND_URL}/awards`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -773,7 +774,7 @@
   }
 
   function renderAwardContainer() {
-    fetch(`http://localhost:3000/awards?runner_id=${runner.id}`)
+    fetch(`${BACKEND_URL}/awards?runner_id=${runner.id}`)
     .then(response => response.json())
     .then(runnerAwards => {
       const awardsList = document.getElementById('awards-list')
@@ -799,7 +800,7 @@
   }
 
   function updateMilesDatabase(miles) {
-    fetch(`http://localhost:3000/runners/${runner.id}`, {
+    fetch(`${BACKEND_URL}/runners/${runner.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -865,7 +866,7 @@
   }
 
   function fetchRaces() {
-    fetch('http://localhost:3000/races')
+    fetch(`${BACKEND_URL}/races`)
       .then(resp => resp.json())
       .then(races => {
         races.forEach(race => {
@@ -897,7 +898,7 @@
   }
 
   function postRaceToDatabase(race) {
-    fetch('http://localhost:3000/races', {
+    fetch(`${BACKEND_URL}/races`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -915,7 +916,7 @@
   function completeRaceEventListener(completeBtn) {
     completeBtn.addEventListener('click', e => {
        const id = e.target.parentElement.id
-       fetch(`http://localhost:3000/races/${id}`, {
+      fetch(`${BACKEND_URL}/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
