@@ -501,7 +501,7 @@
   }
 
   function patchToDatabase(newName) {
-    fetch(`${BACKEND_URL}/${runner.id}`, {
+    fetch(`${BACKEND_URL}/runners/${runner.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -520,7 +520,7 @@
   function addEventListenerDeleteAccount() {
     const deleteButton = document.getElementById('delete')
     deleteButton.addEventListener('click', e => {
-      fetch(`${BACKEND_URL}/${runner.id}`, {
+      fetch(`${BACKEND_URL}/runners/${runner.id}`, {
         method: 'DELETE'
       })
       showLoginPage()
@@ -635,7 +635,7 @@
   }
 
   function patchGoalToDatabase(newGoal) {
-    fetch(`${BACKEND_URL}/${runnerGoal.id}`, {
+    fetch(`${BACKEND_URL}/goals/${runnerGoal.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -662,7 +662,7 @@
   function addEventListenerDeleteGoal() {
     const deleteButton = document.getElementById('delete-goal')
     deleteButton.addEventListener('click', event => {
-      fetch(`${BACKEND_URL}/${runnerGoal.id}`, {
+      fetch(`${BACKEND_URL}/goals/${runnerGoal.id}`, {
         method: 'DELETE'
       }).then(showAddGoal())
     })
@@ -732,7 +732,7 @@
   function listenForGoalComplete() {
     const completeButton = document.getElementById('complete-goal')
     completeButton.addEventListener('click', event => {
-      fetch(`${BACKEND_URL}/${runnerGoal.id}`, {
+      fetch(`${BACKEND_URL}/goals/${runnerGoal.id}`, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -745,7 +745,7 @@
         .then(response => response.json())
         .then(updatedGoal => {
           runnerGoal = updatedGoal;
-          showAddGoal();
+          // showAddGoal();
           hideGoalCompleteBtn();
           initialGoalView();
           getAwardAfterCompleteGoal();
@@ -916,7 +916,7 @@
   function completeRaceEventListener(completeBtn) {
     completeBtn.addEventListener('click', e => {
        const id = e.target.parentElement.id
-      fetch(`${BACKEND_URL}/${id}`, {
+      fetch(`${BACKEND_URL}/races/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
