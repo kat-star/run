@@ -745,7 +745,7 @@
         .then(response => response.json())
         .then(updatedGoal => {
           runnerGoal = updatedGoal;
-          // showAddGoal();
+          showAddGoal();
           hideGoalCompleteBtn();
           initialGoalView();
           getAwardAfterCompleteGoal();
