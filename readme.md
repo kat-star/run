@@ -1,5 +1,5 @@
 ## Project Background
-*This is the frontend repository for Running Goals. To view/clone the Ruby on Rails API backend, please checkout [Running Goals backend](https://github.com/kat-star/run-be).
+*This is the frontend repository for Running Goals. To view/clone the Ruby on Rails API backend, please checkout [Running Goals backend](https://github.com/kat-star/run-be).*
 
 Running Goals is a vanilla Javascript frontend/Ruby on Rails API backend application that helps a runner track their running goals.
 
