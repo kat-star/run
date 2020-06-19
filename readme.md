@@ -3,6 +3,8 @@
 
 Running Goals is a vanilla Javascript frontend/Ruby on Rails API backend application that helps a runner track their running goals.
 
+You can visit [https://kat-star.github.io/run](https://kat-star.github.io/run) for a live demo.
+
 ![gif of running app](running-goals.gif)
 
 ## Features
