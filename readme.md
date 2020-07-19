@@ -14,6 +14,6 @@ A runner can create an account and add new running goals (pace or mileage). By l
 ## Installing and Accessing the Program
 1. Clone this repository
 2. Change directory into `runner-frontend`. Type `open index.html` to open in browser. 
-3. Clone the backend repository at[github.com/kat-star/run-be](https://github.com/kat-star/run-be). Run `bundle install`, then start the Rails server with `rails s`.
+3. Clone the backend repository at [github.com/kat-star/run-be](https://github.com/kat-star/run-be). Run `bundle install`, then start the Rails server with `rails s`.
 5. Get started by creating an account and adding a new goal!
 
